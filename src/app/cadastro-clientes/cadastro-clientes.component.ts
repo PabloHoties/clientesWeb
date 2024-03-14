@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { config } from '../../environments/environment';
+import { authHeader } from '../helpers/httpheader-helper';
 
 @Component({
   selector: 'app-cadastro-clientes',
@@ -29,7 +30,8 @@ export class CadastroClientesComponent implements OnInit {
 
   //método executado quando o componente é aberto
   ngOnInit(): void {
-    this.httpClient.get(config.apiUrl + '/planos')
+    this.httpClient.get(config.apiUrlClientes + '/planos',
+      { headers : authHeader() })
       .subscribe({ //capturando a resposta da API
         next: (data) => { //retorno de sucesso
           this.planos = data as any[]; //armazenando
@@ -70,8 +72,8 @@ export class CadastroClientesComponent implements OnInit {
   //SUBMIT do formulário
   onSubmit() : void {
     //enviando uma requisição POST para cadastrar o cliente na API
-    this.httpClient.post(config.apiUrl + '/clientes', this.form.value, 
-      { responseType: 'text' })
+    this.httpClient.post(config.apiUrlClientes + '/clientes', this.form.value, 
+      { responseType: 'text', headers : authHeader() })
       .subscribe({
         next: (data) => {
           this.mensagem = data; //exibir a mensagme obtida da API

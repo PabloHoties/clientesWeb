@@ -14,16 +14,43 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="clientes-cadastro">
+
+        <li class="nav-item" *ngIf="!isAuthenticated">
+          <a class="nav-link text-white" routerLink="autenticar-usuario">
+            Autenticar Usuário
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="!isAuthenticated">
+          <a class="nav-link text-white" routerLink="criar-usuario">
+            Criar Conta de Usuário
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="isAuthenticated">
+          <a class="nav-link text-white" routerLink="clientes-cadastro">
             Cadastrar Clientes
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="clientes-consulta">
+
+        <li class="nav-item" *ngIf="isAuthenticated">
+          <a class="nav-link text-white" routerLink="clientes-consulta">
             Consultar Clientes
           </a>
         </li>
+        
+        <li class="nav-item" *ngIf="isAuthenticated">
+          <div class="nav-link text-white">
+            <strong>{{emailUsuario}}</strong>
+          </div>
+        </li>
+
+        <li class="nav-item" *ngIf="isAuthenticated">
+          <button class="nav-link text-white" (click)="logout()">
+            Sair do Sistema
+          </button>
+        </li>
+
       </ul>
     </div>
   </div>

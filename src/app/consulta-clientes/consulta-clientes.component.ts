@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { config } from '../../environments/environment';
 import { Router } from '@angular/router';
+import { authHeader } from '../helpers/httpheader-helper';
 
 @Component({
   selector: 'app-consulta-clientes',
@@ -29,9 +30,12 @@ export class ConsultaClientesComponent implements OnInit {
   //método executado sempre que o componente
   //for exibido na página (ao carregar o componente)
   ngOnInit(): void {  
+
+    
     
     //fazendo uma requisição para consultar os clientes na API
-    this.httpClient.get(config.apiUrl + '/clientes')
+    this.httpClient.get(config.apiUrlClientes + '/clientes', 
+      { headers: authHeader() })
       .subscribe({ //função para capturar o retorno da API
         next: (data) => { //resposta de sucesso
           //guardar os clientes obtidos na consulta da API
@@ -46,7 +50,8 @@ export class ConsultaClientesComponent implements OnInit {
   //método executado no momento em que o botão de exclusão for clickado
   onDelete(id: string) : void {
     if(confirm('Deseja realmente excluir o cliente selecionado?')) {
-    this.httpClient.delete(config.apiUrl + '/clientes/' + id, { responseType: 'text' })
+    this.httpClient.delete(config.apiUrlClientes + '/clientes/' + id, 
+      { responseType: 'text', headers: authHeader() })
     .subscribe({
       next: (data) => {
          this.mensagem = data; //guardando a mensagem obtida

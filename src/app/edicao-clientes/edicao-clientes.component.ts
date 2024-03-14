@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { config } from '../../environments/environment';
+import { authHeader } from '../helpers/httpheader-helper';
 
 @Component({
   selector: 'app-edicao-clientes',
@@ -59,7 +60,8 @@ export class EdicaoClientesComponent implements OnInit {
   ngOnInit(): void {
 
     //consultar os planos
-    this.httpClient.get(config.apiUrl + '/planos')
+    this.httpClient.get(config.apiUrlClientes + '/planos',
+      { headers: authHeader() })
       .subscribe({ //função para capturar o retorno da API
         next: (data) => { //resposta de sucesso
           //guardar os clientes obtidos na consulta da API
@@ -73,7 +75,8 @@ export class EdicaoClientesComponent implements OnInit {
     //capturar o id enviado pela URL
     const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
     //consultando o cliente através do ID na API
-    this.httpClient.get(config.apiUrl + "/clientes/" + id)
+    this.httpClient.get(config.apiUrlClientes + "/clientes/" + id,
+      { headers: authHeader() })
       .subscribe({
         next: (data: any) => {
           //preenchendo o formulário com os dados do cliente
@@ -92,8 +95,8 @@ export class EdicaoClientesComponent implements OnInit {
   //função para capturar o submit do formulário
   onSubmit() : void {
     //enviando a requisição para atualizar o cliente
-    this.httpClient.put(config.apiUrl + "/clientes", this.form.value,
-      { responseType: 'text' })
+    this.httpClient.put(config.apiUrlClientes + "/clientes", this.form.value,
+      { responseType: 'text', headers: authHeader() })
     .subscribe({
       next: (data) => {
         this.mensagem = data;
